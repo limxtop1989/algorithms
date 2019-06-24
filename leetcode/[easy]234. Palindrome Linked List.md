@@ -1,6 +1,6 @@
 
 # Title
-[Link](https://leetcode.com/problems/palindrome-linked-list/)
+[Palindrome Linked List](https://leetcode.com/problems/palindrome-linked-list/)
 
 # Description
 Given a singly linked list, determine if it is a palindrome.  
@@ -9,6 +9,7 @@ Given a singly linked list, determine if it is a palindrome.
 
     Input: 1->2
     Output: false
+    
 # Example 2:
 
     Input: 1->2->2->1
@@ -17,6 +18,18 @@ Given a singly linked list, determine if it is a palindrome.
     
 # Follow up
 Could you do it in O(n) time and O(1) space?
+
+Use left and right pointer and traverse to the left and right end at the same time.
+
+* The number of nodes is even:   
+    
+    1->2->2->1   
+    1<-2<-left; right->2->1
+
+* The number of nodes is odd:  
+
+    1->2->3->2->1    
+    1<-2<-left; right->2->1
 
 # Solution
     /**

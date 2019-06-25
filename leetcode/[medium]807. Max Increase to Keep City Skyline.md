@@ -72,3 +72,32 @@ The value of gridNew[i][j] should not larger than the min(largest value in row, 
             return difference;
         }
     }
+    
+# Solution
+    class Solution {
+        public int maxIncreaseKeepingSkyline(int[][] grid) {
+            int length = grid.length;
+            int[] maxRow = new int[length];
+            int[] maxColumn = new int[length];
+
+            for (int row = 0; row < length; row++) {
+                for (int column = 0; column < length; column++) {
+                    maxRow[row] = Math.max(maxRow[row], grid[row][column]);
+                    maxColumn[column] = Math.max(maxColumn[column], grid[row][column]);
+                }
+
+            }
+
+            int difference = 0;
+            for (int row = 0; row < length; row++) {
+                for (int column = 0; column < length; column++) {
+                    difference += Math.min(maxRow[row], maxColumn[column]) - grid[row][column];
+                }
+
+            }
+
+            return difference;
+
+
+        }
+    }

@@ -112,3 +112,66 @@ Given an array of integers nums, sort the array in ascending order.
             return nums[i] < nums[j];
         }
     }
+
+# MergeSort
+        class Solution {
+            public int[] sortArray(int[] nums) {
+                    mergeSort(nums, 0, nums.length -1);
+                    return nums;
+            }
+
+            private void mergeSort(int[] nums, int low, int high) {
+                if (low >= high) {
+                        return;
+                }
+                int mid = (low + high) / 2;
+                mergeSort(nums, low, mid);
+                mergeSort(nums, mid + 1, high);
+                merge(nums, low, mid + 1, high);
+            }
+
+            private void merge(int[] nums, int low, int mid, int high) {
+                int lLength = mid - low;
+                int rLength = high - mid + 1;
+                int[] left = new int[lLength];
+                int[] right = new int[rLength];
+                System.arraycopy(nums, low, left, 0, lLength);
+                System.arraycopy(nums, mid, right, 0, rLength);
+                int l = 0, r = 0, i = low;
+                while (l < lLength && r < rLength) {
+                    nums[i++] = left[l] < right[r] ? left[l++] : right[r++];
+                }
+
+                while (l < lLength) {
+                    nums[i++] = left[l++];
+                }
+
+                while (r < rLength) {
+                    nums[i++] = right[r++];
+                }
+            }
+            // There is drawback in this method
+            private void merge1(int[] nums, int low, int mid, int high) {
+                // copy to auxi array
+                int length = high - low + 1;
+                int[] auxi = new int[length];
+
+                int left = low, right = mid;
+                int i = 0;
+                while (i < length && left < mid && right < high) {
+                        if (nums[left] < nums[right]) {
+                                auxi[i] = nums[left++];
+                        } else {
+                                auxi[i] = nums[right++];
+                        }
+                        i++;
+                }
+                if (right == high) {
+                        System.arraycopy(nums, left, auxi, i, mid - left);
+                } else {
+                        System.arraycopy(nums, right, auxi, i, high - right + 1);
+                }
+                // copy item back in ascending order.
+                System.arraycopy(auxi, 0, nums, low, length);
+            }
+        }

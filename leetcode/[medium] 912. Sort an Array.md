@@ -21,11 +21,11 @@ Given an array of integers nums, sort the array in ascending order.
 * -50000 <= A[i] <= 50000
 
 # Solution
+
+## Quick Sort
     class Solution {
         public int[] sortArray(int[] nums) {
-            //quickSort(nums, 0, nums.length);
-            //return insertSort(nums);
-            //return selectSort(nums);
+            quickSort(nums, 0, nums.length);
         }
 
         private void quickSort(int[] nums, int start, int end) {
@@ -62,58 +62,9 @@ Given an array of integers nums, sort the array in ascending order.
 
             return nums;
         }
-
-        /**
-         * First, find the smallest item in the array and exchange it with the first
-         * entry. Then, find the next smallest item and exchange it with the second 
-         * entry. Continue in this way, until the entire array is sorted. This method
-         * is called selection sort because it works by repeatedly selecting the 
-         * smallest remaining item.
-         **/
-        private int[] selectSort(int[] nums) {
-            int length = nums.length;
-            for (int i = 0; i < length - 1; i++) {
-                int smallest = i;
-                for (int j = i + 1; j < length; j++) {
-                    if (nums[j] < nums[smallest]) {
-                        smallest = j;
-                    }
-                }
-                exchange(nums, i, smallest); 
-            }
-            return nums;
-        }
-
-        private void exchange(int[] nums, int i, int j) {
-            int temp = nums[i];
-            nums[i] = nums[j];
-            nums[j] = temp;
-        }
-        /**
-         * Insertion sort works the way many people sort a hand of playing cards. 
-         * which starts with an empty left hand and the cards face down on the table. 
-         * We remove one card at a time from the table and insert it into the correct
-         * position in the left hand. To find the correct position for a card, we
-         * compare it with each card in the hand, from right to left.
-         */
-        private int[] insertSort(int[] nums) {
-            int length = nums.length;
-            for (int i = 1; i < length; i++) {
-                int key = nums[i];
-                for (int j = i; j > 0 && isLess(nums, j, j - 1); j--) {
-                    exchange(nums, j, j - 1);
-                }
-            }
-
-            return nums;
-        }
-
-        private boolean isLess(int[] nums, int i, int j) {
-            return nums[i] < nums[j];
-        }
     }
-
-# MergeSort
+    
+## Merge Sort
         class Solution {
             public int[] sortArray(int[] nums) {
                     mergeSort(nums, 0, nums.length -1);
@@ -173,5 +124,127 @@ Given an array of integers nums, sort the array in ascending order.
                 }
                 // copy item back in ascending order.
                 System.arraycopy(auxi, 0, nums, low, length);
+            }
+        }
+
+## HeapSort
+        class Solution {
+            public int[] sortArray(int[] nums) {
+                return sortByHeap(nums);
+            }
+
+            private int[] sortByHeap(int[] nums) {
+                int length = nums.length;
+                int heapIndex = length - 1;
+                // shift right one bit is equivalent to divide to 2, don't shift two bit by mistake.
+                for (int i = heapIndex >> 1; i >= 0; i--) {
+                    maxHeapRecursive(nums, i, heapIndex);
+                }
+
+                for (int i = 0; i < length; i++) {
+                    System.out.print(nums[i] + ", ");
+                }
+
+                while (heapIndex > 0) {
+                    exchange(nums, 0, heapIndex);
+                    --heapIndex;
+                    maxHeapRecursive(nums, 0, heapIndex);
+                }
+
+                return nums;
+            }
+
+            private void maxHeapRecursive(int[] nums, int i, int heapIndex) {
+                int left = 2 * i + 1;
+                int right = 2 * i + 2;
+                int max = i;
+                if (left <= heapIndex && nums[left] > nums[i]) {
+                    max = left;
+                }
+
+                if (right <= heapIndex && nums[right] > nums[max]) {
+                    max = right;
+                }
+
+                if (max != i) {
+                    exchange(nums, max, i);
+                    maxHeapRecursive(nums, max, heapIndex);
+                }
+            }
+
+            private void exchange(int[] nums, int i, int j) {
+                int temp = nums[i];
+                nums[i] = nums[j];
+                nums[j] = temp;
+            }
+        }
+        
+## Insert Sort
+        class Solution {
+            public int[] sortArray(int[] nums) {
+                return insertSort(nums);
+            }
+
+            /**
+             * Insertion sort works the way many people sort a hand of playing cards. 
+             * which starts with an empty left hand and the cards face down on the table. 
+             * We remove one card at a time from the table and insert it into the correct
+             * position in the left hand. To find the correct position for a card, we
+             * compare it with each card in the hand, from right to left.
+             */
+            private int[] insertSort(int[] nums) {
+                int length = nums.length;
+                for (int i = 1; i < length; i++) {
+                    int key = nums[i];
+                    for (int j = i; j > 0 && isLess(nums, j, j - 1); j--) {
+                        exchange(nums, j, j - 1);
+                    }
+                }
+
+                return nums;
+            }
+
+            private boolean isLess(int[] nums, int i, int j) {
+                return nums[i] < nums[j];
+            }
+
+            private void exchange(int[] nums, int i, int j) {
+                int temp = nums[i];
+                nums[i] = nums[j];
+                nums[j] = temp;
+            }
+        }
+        
+## Select Sort
+        class Solution {
+            public int[] sortArray(int[] nums) {
+                return selectSort(nums);
+            }
+
+            /**
+             * First, find the smallest item in the array and exchange it with the first
+             * entry. Then, find the next smallest item and exchange it with the second 
+             * entry. Continue in this way, until the entire array is sorted. This method
+             * is called selection sort because it works by repeatedly selecting the 
+             * smallest remaining item.
+             **/
+            private int[] selectSort(int[] nums) {
+                int length = nums.length;
+                for (int i = 0; i < length - 1; i++) {
+                    int smallest = i;
+                    for (int j = i + 1; j < length; j++) {
+                        if (nums[j] < nums[smallest]) {
+                            smallest = j;
+                        }
+                    }
+                    exchange(nums, i, smallest); 
+                }
+                return nums;
+            }
+
+            private void exchange(int[] nums, int i, int j) {
+                int temp = nums[i];
+                nums[i] = nums[j];
+                nums[j] = temp;
             }
         }
